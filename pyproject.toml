@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "bike-share"
+version = "0.1.0"
+description = "A collection of functions to analyze the Toronto bike share dataset."
+authors = ["Maximilian Schlund <3297755+mschlund@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "bike_share"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^1.5.2"
+jupyter = "^1.0.0"
+ipykernel = "^6.19.2"
+requests = "^2.28.1"
+matplotlib = "^3.6.2"
+ftfy = "^6.1.1"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.991"
+pytest = "^7.2.0"
+autopep8 = "^2.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
