@@ -24,7 +24,7 @@ $ conda activate bike_share
 
 3. In that environment, install the current package (in editable (-e) mode, i.e. changes made to the code are automatically available)
 ```
-$ (bike_share) python -m pip install . -e
+$ (bike_share) python -m pip install -e .
 ```
 
 4. Open a new notebook in vscode
