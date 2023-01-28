@@ -134,6 +134,5 @@ dmypy.json
 # Data-folder
 data/
 
-# Solution suggestions (do not accidentially commit ^^)
-*_sol.ipynb
-*_sol.py
+# csv-data
+*.csv
