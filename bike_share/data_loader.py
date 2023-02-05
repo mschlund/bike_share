@@ -13,7 +13,8 @@ def download_bikeshare_data():
     Unzip the downloaded zip-files, generate directories "2017", ...,"2022"
     in the "data" dir and move the unzipped data there.
     """
-    data_path = (pathlib.Path.cwd() / ".." / "data").resolve()
+
+    data_path = (pathlib.Path(__file__).parent.resolve() / ".." / "data").resolve()
     # Toronto Open Data is stored in a CKAN instance. It"s APIs are documented here:
     # https://docs.ckan.org/en/latest/api/
     # To hit our API, you"ll be making requests to:
