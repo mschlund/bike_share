@@ -58,7 +58,7 @@ def _get_clean_unified_df(data_path, colname_dict, logger, year=2019, min_trip_t
     whole_year_df_converted["trip_start_time"] = pd.to_datetime(whole_year_df_converted["trip_start_time"])
     whole_year_df_converted["trip_stop_time"] = pd.to_datetime(whole_year_df_converted["trip_stop_time"])
     logger.info("Resticting data to min/max and setting year...")
-    # 3) restrict the data to those within 0.99 of the durations
+    # 3) restrict the data to those with reasonable durations
     whole_year_df_cut = get_cut_data_minMax(whole_year_df_converted, "trip_duration_seconds", min=min_trip_time, max=max_trip_time) 
     
     # 4) insert a column "year" with the current value
