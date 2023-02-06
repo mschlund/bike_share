@@ -1,6 +1,8 @@
 import logging
 import pathlib
 
+# https://stackoverflow.com/questions/18786912/get-output-from-the-logging-module-in-ipython-notebook
+
 def get_logger():
     logger = logging.getLogger()
     fhandler = logging.FileHandler(filename='mylog.log', mode='a')

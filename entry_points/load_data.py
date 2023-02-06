@@ -36,7 +36,7 @@ def main():
         d = dc.get_clean_unified_df(data_path.absolute(), colname_dict, log, year=y)
         dfs.append(d)
     whole_df = pd.concat(dfs)
-    whole_df.to_csv(data_path / f"consolidated_DF_{start_year}_{end_year}")
+    whole_df.to_csv(data_path / f"consolidated_DF_{start_year}_{end_year}.csv")
 
 if __name__ == "__main__":
     main()

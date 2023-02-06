@@ -3,10 +3,6 @@ import ftfy
 import os
 import pandas as pd
 
-
-# https://stackoverflow.com/questions/18786912/get-output-from-the-logging-module-in-ipython-notebook
-
-
 #helper-functions for exploratory data analysis
 def get_cut_data_minMax(data, col, min=60, max=10000):
     return data[(data[col] <= max) & (data[col] >= min)]
@@ -31,7 +27,10 @@ def get_name2id(data):
     return data[["from_station_name", "from_station_id"]].drop_duplicates(). \
                 rename(columns={"from_station_name": "Name", "from_station_id": "ID"}).reset_index(drop=True)
 
-def _get_clean_unified_df(data_path, colname_dict, logger, year=2019):
+# < 30s does not make sense...
+# bike-sharing is 4$ for every 30 mins over the 30/45-minute-plan ... so 2.5h=9000s should be a safe limit to cut
+
+def _get_clean_unified_df(data_path, colname_dict, logger, year=2019, min_trip_time=30, max_trip_time=9000):
     assert(year >= 2017 and year <= 2022)
     year = int(year)
     dfs = get_dfs_for_year(data_path, logger, year)
@@ -60,7 +59,8 @@ def _get_clean_unified_df(data_path, colname_dict, logger, year=2019):
     whole_year_df_converted["trip_stop_time"] = pd.to_datetime(whole_year_df_converted["trip_stop_time"])
     logger.info("Resticting data to min/max and setting year...")
     # 3) restrict the data to those within 0.99 of the durations
-    whole_year_df_cut = get_cut_data_minMax(whole_year_df_converted, "trip_duration_seconds", min=30, max=10000) # < 30s does not make sense... >10k is more than ~2.5h.. should be ok to disregard
+    whole_year_df_cut = get_cut_data_minMax(whole_year_df_converted, "trip_duration_seconds", min=min_trip_time, max=max_trip_time) 
+    
     # 4) insert a column "year" with the current value
     whole_year_df_cut.insert(0, "year", year)
     logger.info("done.")
@@ -78,6 +78,8 @@ def get_dfs_for_year(data_path, logger, year):
     return dfs
 
 def get_clean_unified_df(data_path, colname_dict, logger, year=2019):
+    min_trip_time = 30
+    max_trip_time = 9000
     df_filename = f"consolidated_DF_{year}.csv"
     out_df_path = data_path / df_filename
     if os.path.exists(out_df_path):
@@ -86,7 +88,7 @@ def get_clean_unified_df(data_path, colname_dict, logger, year=2019):
     else:
         logger.info(f"Computing consolidated DF anew and saving it to '{df_filename}' afterwards.")
         # note: this takes ~7-8min to run!
-        df = _get_clean_unified_df(data_path, colname_dict, logger=logger, year=year)
+        df = _get_clean_unified_df(data_path, colname_dict, logger=logger, year=year, min_trip_time=min_trip_time, max_trip_time=max_trip_time)
         logger.info("Saving data to csv...")
         df.to_csv(str(data_path) + "/" + df_filename, index=False)
         logger.info("done saving.")
