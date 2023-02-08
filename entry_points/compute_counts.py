@@ -15,12 +15,15 @@ def main():
         log.info(f"Outfile '{outfile}' already exists ... skipping.")
         return
 
+    log.info(f"Reading in {data_path / 'consolidated_DF_2019_2022.cs'}.")
     wole_df = pd.read_csv(data_path / "consolidated_DF_2019_2022.csv", parse_dates=["trip_start_time", "trip_stop_time"])
+    log.info("Grouping w.r.t. 'from_station_id'.")
     df_grouped = wole_df.groupby("from_station_id").resample("D", on="trip_start_time").count()
-
+    
     # here, the column "year" is arbitrary ... we did use "count" so all columns have the same value
     daily_counts = df_grouped["year"].reset_index()
     daily_counts = daily_counts.rename(columns = {"year" : "count"})
+    log.info(f"Writing results to csv {outfile}")
     daily_counts.to_csv(outfile, index=False)
 
 if __name__ == "__main__":
