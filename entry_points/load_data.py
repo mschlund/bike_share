@@ -8,7 +8,7 @@ import pandas as pd
 
 import bike_share.data_loader as dl
 import bike_share.utils as ut
-import bike_share.data_cleaning_sol as dc
+import bike_share.data_cleaning as dc
 
 def main():
     dl.download_bikeshare_data()
